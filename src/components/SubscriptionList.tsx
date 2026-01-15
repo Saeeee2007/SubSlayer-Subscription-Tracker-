@@ -42,6 +42,20 @@ const categoryColors: Record<string, string> = {
   Other: "bg-chart-other text-white",
 };
 
+// Brand colors for specific services
+const brandColors: Record<string, { bg: string; text: string }> = {
+  Netflix: { bg: "bg-[#E50914]", text: "text-white" },
+  Spotify: { bg: "bg-[#1DB954]", text: "text-white" },
+  "Disney+": { bg: "bg-[#113CCF]", text: "text-white" },
+  "Planet Fitness": { bg: "bg-[#FFD700]", text: "text-black" },
+  "iCloud Storage": { bg: "bg-gradient-to-br from-blue-400 to-blue-600", text: "text-white" },
+  "Xbox Game Pass": { bg: "bg-[#107C10]", text: "text-white" },
+  YouTube: { bg: "bg-[#FF0000]", text: "text-white" },
+  "Amazon Prime": { bg: "bg-[#00A8E1]", text: "text-white" },
+  Hulu: { bg: "bg-[#1CE783]", text: "text-black" },
+  "Apple Music": { bg: "bg-gradient-to-br from-[#FA233B] to-[#FB5C74]", text: "text-white" },
+};
+
 export const SubscriptionList = ({
   subscriptions,
   isLoading,
@@ -75,10 +89,15 @@ export const SubscriptionList = ({
   }
 
   return (
-    <div className="glass-card p-6 overflow-hidden">
-      <h2 className="text-lg font-semibold text-foreground mb-4">
-        Your Subscriptions
-      </h2>
+    <div className="glass-card p-4 sm:p-6 overflow-hidden">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-foreground">
+          Your Subscriptions
+        </h2>
+        <span className="text-xs text-muted-foreground bg-secondary/50 px-3 py-1 rounded-full">
+          {subscriptions.length} active
+        </span>
+      </div>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
@@ -93,17 +112,21 @@ export const SubscriptionList = ({
           <TableBody>
             {subscriptions.map((sub) => {
               const IconComponent = categoryIcons[sub.category] || HelpCircle;
+              const brandStyle = brandColors[sub.name];
+              const iconBg = brandStyle?.bg || categoryColors[sub.category] || "bg-chart-other";
+              const iconText = brandStyle?.text || "text-white";
+              
               return (
                 <TableRow 
                   key={sub.id} 
-                  className="border-border hover:bg-secondary/30 transition-colors group"
+                  className="border-border/50 hover:bg-secondary/40 transition-all duration-200 group"
                 >
-                  <TableCell className="font-medium">
+                  <TableCell className="font-medium py-4">
                     <div className="flex items-center gap-3">
-                      <div className={`w-9 h-9 rounded-lg ${categoryColors[sub.category] || "bg-chart-other"} flex items-center justify-center`}>
-                        <IconComponent className="w-4 h-4" />
+                      <div className={`w-10 h-10 rounded-xl ${iconBg} ${iconText} flex items-center justify-center shadow-md`}>
+                        <IconComponent className="w-5 h-5" />
                       </div>
-                      <span className="text-foreground">{sub.name}</span>
+                      <span className="text-foreground font-semibold">{sub.name}</span>
                     </div>
                   </TableCell>
                   <TableCell>
