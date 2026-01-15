@@ -42,12 +42,11 @@ Ensure you have **Node.js** and **npm** installed on your machine.
 
 1.  **Clone the repository**
     ```bash
-    git clone [PASTE YOUR GITHUB REPO LINK HERE]
-    ```
+    https://github.com/Saeeee2007/SubSlayer-Subscription-Tracker-.git
 
 2.  **Navigate to the project directory**
     ```bash
-    cd SubSlayer
+    cd SubSlayer Subscription Tracker
     ```
 
 3.  **Install dependencies**
