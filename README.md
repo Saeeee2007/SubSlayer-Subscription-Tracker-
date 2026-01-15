@@ -1,73 +1,72 @@
-# Welcome to your Lovable project
+# SubSlayer 💸
 
-## Project info
+### A Full-Stack Web Application for HackOverflow 2026
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Developer:** Saee Deshpande
+**Mode:** Solo Participation
+**Track:** Open Innovation / Fintech
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 📖 Project Overview
 
-**Use Lovable**
+**SubSlayer** is a personal finance utility designed to combat "subscription fatigue." In today's digital economy, the average user wastes hundreds of dollars annually on forgotten or unused recurring payments.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+I designed and developed this application to provide a centralized, intuitive dashboard where users can visualize their spending, manage renewal dates, and regain control over their financial data. My goal was to build a solution that is not only functional but also scalable and visually elegant.
 
-Changes made via Lovable will be committed automatically to this repo.
+## ✨ Key Features
 
-**Use your preferred IDE**
+* **📊 Smart Dashboard:** A visual breakdown of monthly vs. yearly spending using interactive charts.
+* **🔔 Renewal Tracking:** Clear indicators of when the next payment is due to prevent surprise charges.
+* **📝 CRUD Functionality:** Users can easily Add, Edit, and Delete subscriptions from their personal database.
+* **📱 Fully Responsive:** Optimized UI that works seamlessly on desktop, tablet, and mobile browsers.
+* **🎨 Modern UX:** Built with a focus on clean aesthetics and accessibility using a high-contrast design system.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠️ Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+I chose a modern, performance-oriented tech stack to ensure the application is fast, type-safe, and scalable:
 
-Follow these steps:
+* **Frontend:** React (TypeScript) for a robust component architecture.
+* **Build Tool:** Vite for lightning-fast bundling and development.
+* **Styling:** Tailwind CSS + Shadcn UI for a professional, consistent design system.
+* **Language:** TypeScript to ensure code reliability and maintainability.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🚀 Getting Started
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+If you wish to run this project locally to test the features, please follow these steps:
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Prerequisites
+Ensure you have **Node.js** and **npm** installed on your machine.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Installation
 
-**Edit a file directly in GitHub**
+1.  **Clone the repository**
+    ```bash
+    git clone [PASTE YOUR GITHUB REPO LINK HERE]
+    ```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+2.  **Navigate to the project directory**
+    ```bash
+    cd SubSlayer
+    ```
 
-**Use GitHub Codespaces**
+3.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+4.  **Start the development server**
+    ```bash
+    npm run dev
+    ```
 
-## What technologies are used for this project?
+## 🔮 Future Improvements
 
-This project is built with:
+While this version represents the MVP (Minimum Viable Product) submitted for HackOverflow, I have a roadmap for future development:
+* **AI Integration:** Implementing OCR to automatically scan bank statements for recurring payments.
+* **Smart Alerts:** Email and SMS notifications 3 days before a renewal.
+* **Multi-Currency Support:** To support global users with automatic exchange rate conversion.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+*Designed and Developed by [YOUR NAME] for HackOverflow 2026.*
