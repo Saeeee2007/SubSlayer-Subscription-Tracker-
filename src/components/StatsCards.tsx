@@ -1,4 +1,4 @@
-import { DollarSign, Calendar, TrendingUp, CreditCard } from "lucide-react";
+import { DollarSign, CreditCard, Crown } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type Subscription = Database["public"]["Tables"]["subscriptions"]["Row"];
@@ -9,45 +9,37 @@ interface StatsCardsProps {
 
 export const StatsCards = ({ subscriptions }: StatsCardsProps) => {
   const totalMonthly = subscriptions.reduce((sum, sub) => sum + Number(sub.cost), 0);
-  const totalYearly = totalMonthly * 12;
   const activeCount = subscriptions.length;
   
-  const upcomingRenewals = subscriptions.filter((sub) => {
-    const renewalDate = new Date(sub.renewal_date);
-    const today = new Date();
-    const sevenDaysFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-    return renewalDate >= today && renewalDate <= sevenDaysFromNow;
-  }).length;
+  const mostExpensive = subscriptions.length > 0
+    ? subscriptions.reduce((max, sub) => 
+        Number(sub.cost) > Number(max.cost) ? sub : max
+      , subscriptions[0])
+    : null;
 
   const stats = [
     {
       icon: DollarSign,
-      label: "Monthly Spend",
+      label: "Total Monthly Cost",
       value: `$${totalMonthly.toFixed(2)}`,
-      change: null,
-    },
-    {
-      icon: TrendingUp,
-      label: "Yearly Projection",
-      value: `$${totalYearly.toFixed(2)}`,
-      change: null,
+      subtext: `$${(totalMonthly * 12).toFixed(2)}/year`,
     },
     {
       icon: CreditCard,
       label: "Active Subscriptions",
       value: activeCount.toString(),
-      change: null,
+      subtext: activeCount === 1 ? "subscription" : "subscriptions",
     },
     {
-      icon: Calendar,
-      label: "Upcoming Renewals",
-      value: upcomingRenewals.toString(),
-      subtext: "Next 7 days",
+      icon: Crown,
+      label: "Most Expensive",
+      value: mostExpensive ? `$${Number(mostExpensive.cost).toFixed(2)}` : "$0.00",
+      subtext: mostExpensive ? mostExpensive.name : "No subscriptions",
     },
   ];
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {stats.map((stat) => (
         <div
           key={stat.label}

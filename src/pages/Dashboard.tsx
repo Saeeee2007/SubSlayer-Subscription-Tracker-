@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Zap, Plus, LogOut, Loader2 } from "lucide-react";
 import { SubscriptionList } from "@/components/SubscriptionList";
 import { AddSubscriptionDialog } from "@/components/AddSubscriptionDialog";
+import { EditSubscriptionDialog } from "@/components/EditSubscriptionDialog";
 import { SpendingChart } from "@/components/SpendingChart";
 import { SavingsCalculator } from "@/components/SavingsCalculator";
 import { StatsCards } from "@/components/StatsCards";
@@ -18,6 +19,8 @@ const Dashboard = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -46,6 +49,26 @@ const Dashboard = () => {
     };
   }, [navigate]);
 
+  const seedSampleData = async (userId: string) => {
+    const today = new Date();
+    const sampleSubscriptions = [
+      { name: "Netflix", cost: 15.99, renewal_date: new Date(today.getFullYear(), today.getMonth(), 15).toISOString().split('T')[0], category: "Entertainment" as const },
+      { name: "Spotify", cost: 9.99, renewal_date: new Date(today.getFullYear(), today.getMonth(), 22).toISOString().split('T')[0], category: "Music" as const },
+      { name: "Planet Fitness", cost: 24.99, renewal_date: new Date(today.getFullYear(), today.getMonth() + 1, 1).toISOString().split('T')[0], category: "Health & Fitness" as const },
+      { name: "Disney+", cost: 13.99, renewal_date: new Date(today.getFullYear(), today.getMonth(), 8).toISOString().split('T')[0], category: "Entertainment" as const },
+      { name: "iCloud Storage", cost: 2.99, renewal_date: new Date(today.getFullYear(), today.getMonth(), 28).toISOString().split('T')[0], category: "Cloud Storage" as const },
+      { name: "Xbox Game Pass", cost: 16.99, renewal_date: new Date(today.getFullYear(), today.getMonth() + 1, 5).toISOString().split('T')[0], category: "Gaming" as const },
+    ];
+
+    const { error } = await supabase.from("subscriptions").insert(
+      sampleSubscriptions.map(sub => ({ ...sub, user_id: userId }))
+    );
+
+    if (error) {
+      console.error("Error seeding sample data:", error);
+    }
+  };
+
   const fetchSubscriptions = async () => {
     setIsLoading(true);
     const { data, error } = await supabase
@@ -60,7 +83,21 @@ const Dashboard = () => {
         variant: "destructive",
       });
     } else {
-      setSubscriptions(data || []);
+      // If no subscriptions exist, seed sample data
+      if (data && data.length === 0) {
+        const { data: { user: currentUser } } = await supabase.auth.getUser();
+        if (currentUser) {
+          await seedSampleData(currentUser.id);
+          // Fetch again after seeding
+          const { data: seededData } = await supabase
+            .from("subscriptions")
+            .select("*")
+            .order("renewal_date", { ascending: true });
+          setSubscriptions(seededData || []);
+        }
+      } else {
+        setSubscriptions(data || []);
+      }
     }
     setIsLoading(false);
   };
@@ -73,6 +110,17 @@ const Dashboard = () => {
   const handleSubscriptionAdded = () => {
     fetchSubscriptions();
     setIsDialogOpen(false);
+  };
+
+  const handleEditSubscription = (subscription: Subscription) => {
+    setEditingSubscription(subscription);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSubscriptionUpdated = () => {
+    fetchSubscriptions();
+    setIsEditDialogOpen(false);
+    setEditingSubscription(null);
   };
 
   const handleDeleteSubscription = async (id: string) => {
@@ -160,6 +208,7 @@ const Dashboard = () => {
               subscriptions={subscriptions}
               isLoading={isLoading}
               onDelete={handleDeleteSubscription}
+              onEdit={handleEditSubscription}
             />
           </div>
 
@@ -176,6 +225,14 @@ const Dashboard = () => {
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onSuccess={handleSubscriptionAdded}
+      />
+
+      {/* Edit Subscription Dialog */}
+      <EditSubscriptionDialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        onSuccess={handleSubscriptionUpdated}
+        subscription={editingSubscription}
       />
     </div>
   );
