@@ -60,47 +60,66 @@ export const SpendingChart = ({ subscriptions }: SpendingChartProps) => {
     return null;
   };
 
+  const total = categoryData.reduce((sum, item) => sum + item.value, 0);
+
   return (
-    <div className="glass-card p-6">
-      <h2 className="text-lg font-semibold text-foreground mb-4">
-        Spending by Category
-      </h2>
-      <div className="h-48">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={categoryData}
-              cx="50%"
-              cy="50%"
-              innerRadius={50}
-              outerRadius={70}
-              paddingAngle={3}
-              dataKey="value"
-            >
-              {categoryData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-      {/* Legend */}
-      <div className="mt-4 space-y-2">
-        {categoryData.map((item) => (
-          <div key={item.name} className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-2">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: item.color }}
-              />
-              <span className="text-muted-foreground">{item.name}</span>
+    <div className="glass-card p-6 relative overflow-hidden">
+      {/* Subtle background glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 pointer-events-none" />
+      
+      <div className="relative z-10">
+        <h2 className="text-xl font-bold text-foreground mb-6">
+          Spending by Category
+        </h2>
+        <div className="h-52 relative">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={categoryData}
+                cx="50%"
+                cy="50%"
+                innerRadius={55}
+                outerRadius={80}
+                paddingAngle={4}
+                dataKey="value"
+                strokeWidth={0}
+              >
+                {categoryData.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={entry.color}
+                    className="drop-shadow-lg"
+                  />
+                ))}
+              </Pie>
+              <Tooltip content={<CustomTooltip />} />
+            </PieChart>
+          </ResponsiveContainer>
+          {/* Center label */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-foreground">${total.toFixed(0)}</div>
+              <div className="text-xs text-muted-foreground">total</div>
             </div>
-            <span className="text-foreground font-medium">
-              ${item.value.toFixed(2)}
-            </span>
           </div>
-        ))}
+        </div>
+        {/* Legend */}
+        <div className="mt-6 space-y-2.5">
+          {categoryData.map((item) => (
+            <div key={item.name} className="flex items-center justify-between text-sm group">
+              <div className="flex items-center gap-2.5">
+                <div
+                  className="w-3 h-3 rounded-full shadow-sm"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-muted-foreground group-hover:text-foreground transition-colors">{item.name}</span>
+              </div>
+              <span className="text-foreground font-semibold tabular-nums">
+                ${item.value.toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
