@@ -68,4 +68,4 @@ While this version represents the MVP (Minimum Viable Product) submitted for Hac
 
 ---
 
-*Designed and Developed by [YOUR NAME] for HackOverflow 2026.*
+*Designed and Developed by Saee Deshpande for HackOverflow 2026.*
